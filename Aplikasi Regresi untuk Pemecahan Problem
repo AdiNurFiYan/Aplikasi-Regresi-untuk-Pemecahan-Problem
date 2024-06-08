@@ -1,0 +1,57 @@
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+
+#banner
+print("=== PROGRAM Aplikasi Regresi untuk Pemecahan Problem ===")
+print("=== Adi Nur Fi Yan – 21120122120010 ===")
+
+# Membaca data dari CSV
+data = pd.read_csv('path_to_your_csv.csv')
+X = data['Hours Studied'].values.reshape(-1,1)
+y = data['Performance Index'].values
+
+# Metode 1: Model Linear
+lin_reg = LinearRegression()
+lin_reg.fit(X, y)
+y_pred_lin = lin_reg.predict(X)
+
+# Metode 2: Model Pangkat Sederhana
+# Mengubah data menjadi logaritmik untuk linearisasi
+X_log = np.log(X)
+y_log = np.log(y)
+lin_reg.fit(X_log, y_log)
+y_pred_pow = np.exp(lin_reg.predict(X_log))
+
+# Menghitung galat RMS
+rms_error_lin = np.sqrt(mean_squared_error(y, y_pred_lin))
+rms_error_pow = np.sqrt(mean_squared_error(y, np.power(y_pred_pow, 2)))
+
+print(f'Galat RMS untuk Model Linear: {rms_error_lin}')
+print(f'Galat RMS untuk Model Pangkat Sederhana: {rms_error_pow}')
+
+# Plot grafik
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(12, 6))
+
+# Plot untuk Model Linear
+plt.subplot(1, 2, 1)
+plt.scatter(X, y, color='blue')
+plt.plot(X, y_pred_lin, color='red')
+plt.title('Model Linear')
+plt.xlabel('Hours Studied')
+plt.ylabel('Performance Index')
+
+# Plot untuk Model Pangkat Sederhana
+plt.subplot(1, 2, 2)
+plt.scatter(X, y, color='blue')
+plt.plot(X, y_pred_pow, color='red')  # Gunakan y_pred_pow yang sudah di-transformasi kembali
+plt.title('Model Pangkat Sederhana')
+plt.xlabel('Hours Studied')
+plt.ylabel('Performance Index')
+
+plt.tight_layout()
+plt.show()
