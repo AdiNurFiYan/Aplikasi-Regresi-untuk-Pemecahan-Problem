@@ -9,7 +9,8 @@ print("=== PROGRAM Aplikasi Regresi untuk Pemecahan Problem ===")
 print("=== Adi Nur Fi Yan – 21120122120010 ===")
 
 # Membaca data dari CSV
-data = pd.read_csv('path_to_your_csv.csv')
+file_path = 'diganti dengan lokasi dan nama file yang dimiliki'
+data = pd.read_csv(file_path)
 X = data['Hours Studied'].values.reshape(-1,1)
 y = data['Performance Index'].values
 
